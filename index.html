@@ -1,0 +1,1423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gen. AI in Education — Level II · Workshop Companion</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f5f3ef;
+    --surface: #ffffff;
+    --border: #c8c2b8;
+    --text: #1c1a17;
+    --muted: #5a5450;
+    --accent: #2d4a5e;
+    --accent-light: #e8eef2;
+    --assignment: #3d3260;
+    --assignment-light: #eeeaf7;
+    --tag-basic: #1e5038;
+    --tag-basic-bg: #e6f4ed;
+    --tag-adv: #6a2e12;
+    --tag-adv-bg: #faeee7;
+    --tag-research: #163a6a;
+    --tag-research-bg: #e7eefa;
+    --tag-students: #452d6a;
+    --tag-students-bg: #f0eafa;
+    --step-bg: #edf2f6;
+    --radius: 12px;
+    --shadow: 0 2px 12px rgba(0,0,0,0.07);
+    --focus-outline: 3px solid #2d4a5e;
+    --focus-offset: 3px;
+  }
+
+  /* ── SKIP LINK ── */
+  .skip-link {
+    position: absolute;
+    top: -40px;
+    left: 0;
+    background: var(--accent);
+    color: #fff;
+    padding: 8px 16px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    z-index: 200;
+    border-radius: 0 0 8px 0;
+    text-decoration: none;
+    transition: top 0.2s;
+  }
+  .skip-link:focus {
+    top: 0;
+    outline: var(--focus-outline);
+    outline-offset: 0;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+  }
+
+  /* ── HEADER ── */
+  header {
+    background: var(--accent);
+    color: #fff;
+    padding: 20px 40px 22px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 16px rgba(0,0,0,0.18);
+  }
+  .header-byline {
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    opacity: 0.85;
+    margin-bottom: 5px;
+  }
+  header h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.85rem;
+    font-weight: 400;
+    letter-spacing: 0.01em;
+    line-height: 1.15;
+  }
+  .header-sub {
+    font-size: 0.82rem;
+    opacity: 0.88;
+    margin-top: 4px;
+    font-weight: 300;
+    letter-spacing: 0.03em;
+  }
+
+  /* ── NAV TABS ── */
+  nav {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 0 24px;
+    display: flex;
+    overflow-x: auto;
+    scrollbar-width: none;
+    position: sticky;
+    top: 102px;
+    z-index: 90;
+    box-shadow: 0 1px 8px rgba(0,0,0,0.05);
+  }
+  nav::-webkit-scrollbar { display: none; }
+
+  .nav-btn {
+    padding: 14px 18px;
+    border: none;
+    background: none;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: var(--muted);
+    cursor: pointer;
+    white-space: nowrap;
+    border-bottom: 3px solid transparent;
+    transition: all 0.2s;
+    letter-spacing: 0.02em;
+  }
+  .nav-btn:hover { color: var(--text); }
+  .nav-btn:focus-visible {
+    outline: var(--focus-outline);
+    outline-offset: -3px;
+    border-radius: 4px;
+  }
+  .nav-btn.active { color: var(--accent); border-bottom-color: var(--accent); }
+
+  /* ── MAIN ── */
+  main { max-width: 860px; margin: 0 auto; padding: 40px 24px 80px; }
+
+  /* ── PANELS ── */
+  .panel { display: none; }
+  .panel.active { display: block; }
+
+  /* ── SECTION HEADER ── */
+  .section-header { margin-bottom: 32px; }
+  .section-tag {
+    display: inline-block;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: 20px;
+    margin-bottom: 10px;
+  }
+  .tag-basic    { background: var(--tag-basic-bg);    color: var(--tag-basic); }
+  .tag-adv      { background: var(--tag-adv-bg);      color: var(--tag-adv); }
+  .tag-research { background: var(--tag-research-bg); color: var(--tag-research); }
+  .tag-students { background: var(--tag-students-bg); color: var(--tag-students); }
+
+  .section-header h2 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.9rem;
+    font-weight: 400;
+    line-height: 1.2;
+  }
+  .section-sub { font-size: 0.88rem; color: var(--muted); margin-top: 6px; font-weight: 300; }
+
+  /* ── CARD ── */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    margin-bottom: 28px;
+    box-shadow: var(--shadow);
+    overflow: hidden;
+  }
+
+  .card-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 20px;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+  }
+  .card-label.example {
+    background: var(--accent-light);
+    color: var(--accent);
+    border-bottom: 1px solid #c9d8e2;
+  }
+  .card-label svg { width: 14px; height: 14px; flex-shrink: 0; }
+
+  .card-body { padding: 24px 24px 20px; }
+  .card-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.12rem;
+    font-weight: 400;
+    margin-bottom: 14px;
+  }
+
+  /* ── PROMPT BOX ── */
+  .prompt-box {
+    background: #faf9f7;
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--accent);
+    border-radius: 8px;
+    padding: 18px 20px;
+    font-size: 0.9rem;
+    line-height: 1.7;
+    color: #2a2620;
+    white-space: pre-wrap;
+  }
+
+  /* ── AI OUTPUT BOX ── */
+  .output-box {
+    background: #f6faf6;
+    border: 1px solid #9dbf9d;
+    border-left: 4px solid #3d6e3d;
+    border-radius: 8px;
+    padding: 16px 20px;
+    font-size: 0.84rem;
+    line-height: 1.65;
+    color: #1e2e1e;
+    margin-top: 14px;
+  }
+  .output-label {
+    font-size: 0.67rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #2e5a2e;
+    margin-bottom: 10px;
+  }
+  .output-box table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 0.82rem; }
+  .output-box th { text-align: left; padding: 7px 10px; background: #dceadc; font-weight: 600; border: 1px solid #b8d0b8; }
+  .output-box td { padding: 6px 10px; border: 1px solid #a8c8a8; vertical-align: top; }
+  .output-box tr:nth-child(even) td { background: #eef5ee; }
+
+  /* ── PROMPT STEPS ── */
+  .prompt-steps { display: flex; flex-direction: column; gap: 12px; }
+  .prompt-step {
+    background: var(--step-bg);
+    border: 1px solid #d5e0e8;
+    border-radius: 8px;
+    padding: 14px 18px;
+    font-size: 0.88rem;
+    line-height: 1.65;
+    white-space: pre-wrap;
+  }
+  .step-label {
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 6px;
+  }
+
+  /* ── INSTRUCTION ── */
+  .instruction {
+    margin-top: 14px;
+    padding: 12px 16px;
+    background: #fffbf0;
+    border: 1px solid #d4c890;
+    border-radius: 8px;
+    font-size: 0.82rem;
+    color: #4a3a10;
+    line-height: 1.55;
+  }
+  .instruction strong { font-weight: 600; }
+
+  /* ── DIVIDER ── */
+  .divider {
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 32px 0 20px;
+  }
+  .divider::before, .divider::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+  /* ── FRAMEWORK PILLS ── */
+  .framework { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
+  .framework-item {
+    background: var(--accent-light);
+    border: 1px solid #a8c0cf;
+    border-radius: 6px;
+    padding: 6px 14px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--accent);
+  }
+
+  /* ── YOUR TURN ── */
+  .your-turn-wrapper { margin-bottom: 28px; }
+
+  .your-turn-btn {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 15px 24px;
+    border: 2px solid var(--assignment);
+    border-radius: var(--radius);
+    background: var(--assignment-light);
+    color: var(--assignment);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.97rem;
+    font-weight: 600;
+    cursor: pointer;
+    width: 100%;
+    text-align: left;
+    transition: background 0.2s, color 0.2s, border-radius 0.2s;
+    letter-spacing: 0.01em;
+  }
+  .your-turn-btn:hover { background: var(--assignment); color: #fff; }
+  .your-turn-btn:focus-visible {
+    outline: var(--focus-outline);
+    outline-offset: var(--focus-offset);
+  }
+  .your-turn-btn.open {
+    border-radius: var(--radius) var(--radius) 0 0;
+    background: var(--assignment);
+    color: #fff;
+  }
+  .btn-arrow { margin-left: auto; font-size: 1.2rem; transition: transform 0.25s; display: inline-block; }
+  .your-turn-btn.open .btn-arrow { transform: rotate(90deg); }
+
+  .your-turn-content {
+    display: none;
+    background: var(--surface);
+    border: 2px solid var(--assignment);
+    border-top: none;
+    border-radius: 0 0 var(--radius) var(--radius);
+    overflow: hidden;
+    animation: slideDown 0.22s ease;
+  }
+  .your-turn-content.visible { display: block; }
+
+  @keyframes slideDown {
+    from { opacity: 0; transform: translateY(-6px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .your-turn-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 20px;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    background: #ddd8f0;
+    color: var(--assignment);
+    border-bottom: 1px solid #c8c0e0;
+  }
+  .your-turn-label svg { width: 14px; height: 14px; flex-shrink: 0; }
+
+  .your-turn-body { padding: 24px 24px 20px; }
+  .your-turn-body .card-title { font-family: 'DM Serif Display', serif; font-size: 1.1rem; font-weight: 400; margin-bottom: 14px; }
+  .your-turn-body .prompt-box { border-left-color: var(--assignment); background: #f9f8fc; }
+  .your-turn-body .instruction { background: #f5f2fc; border-color: #a89ed0; color: #2a2248; }
+
+  /* ── INPUT AREA ── */
+  .input-area {
+    margin-top: 22px;
+    padding-top: 20px;
+    border-top: 1px dashed #c8c0e0;
+  }
+  .input-label {
+    display: block;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    color: var(--assignment);
+    margin-bottom: 8px;
+  }
+  .user-prompt-input {
+    width: 100%;
+    min-height: 130px;
+    padding: 14px 16px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.88rem;
+    line-height: 1.65;
+    color: var(--text);
+    background: #faf9fd;
+    border: 1px solid #c8c0e0;
+    border-left: 4px solid var(--assignment);
+    border-radius: 8px;
+    resize: vertical;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .user-prompt-input::placeholder { color: #9e96b8; }
+  .user-prompt-input:focus {
+    border-color: var(--assignment);
+    box-shadow: 0 0 0 3px rgba(61,50,96,0.12);
+  }
+  .feedback-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    margin-top: 12px;
+    padding: 10px 22px;
+    background: var(--assignment);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    letter-spacing: 0.02em;
+    transition: background 0.2s, opacity 0.2s;
+  }
+  .feedback-btn:hover:not(:disabled) { background: #2e2450; }
+  .feedback-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+  .feedback-btn:focus-visible {
+    outline: var(--focus-outline);
+    outline-offset: var(--focus-offset);
+  }
+  .feedback-spinner {
+    width: 13px; height: 13px;
+    border: 2px solid rgba(255,255,255,0.35);
+    border-top-color: #fff;
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+    display: none;
+  }
+  .feedback-btn.loading .feedback-spinner { display: inline-block; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .feedback-output {
+    margin-top: 16px;
+    background: #f6faf6;
+    border: 1px solid #9dbf9d;
+    border-left: 4px solid #3d6e3d;
+    border-radius: 8px;
+    padding: 16px 20px;
+  }
+  .feedback-output .output-label {
+    margin-bottom: 10px;
+  }
+  .feedback-text {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.86rem;
+    line-height: 1.75;
+    color: #1e2e1e;
+    white-space: pre-wrap;
+    min-height: 1.5em;
+  }
+</style>
+</head>
+<body>
+<a href="#main-content" class="skip-link">Skip to main content</a>
+
+<header role="banner">
+  <div class="header-byline">Dr. Bakr Gomaa &nbsp;·&nbsp; AASTMT</div>
+  <h1>Generative AI in Education — Level II</h1>
+  <div class="header-sub">Workshop Companion &nbsp;·&nbsp; Follow along on your screen</div>
+</header>
+
+<nav role="tablist" aria-label="Workshop sections">
+  <button class="nav-btn active" id="tab-intro" role="tab" aria-selected="true" aria-controls="panel-intro" onclick="showPanel('intro',this)">Intro</button>
+  <button class="nav-btn" id="tab-basic" role="tab" aria-selected="false" aria-controls="panel-basic" onclick="showPanel('basic',this)">Basic Prompting</button>
+  <button class="nav-btn" id="tab-persona" role="tab" aria-selected="false" aria-controls="panel-persona" onclick="showPanel('persona',this)">Persona</button>
+  <button class="nav-btn" id="tab-stacked" role="tab" aria-selected="false" aria-controls="panel-stacked" onclick="showPanel('stacked',this)">Stacked Persona</button>
+  <button class="nav-btn" id="tab-cot" role="tab" aria-selected="false" aria-controls="panel-cot" onclick="showPanel('cot',this)">Chain of Thought</button>
+  <button class="nav-btn" id="tab-negative" role="tab" aria-selected="false" aria-controls="panel-negative" onclick="showPanel('negative',this)">Negative Prompting</button>
+  <button class="nav-btn" id="tab-research" role="tab" aria-selected="false" aria-controls="panel-research" onclick="showPanel('research',this)">Gen AI in Research</button>
+  <button class="nav-btn" id="tab-students" role="tab" aria-selected="false" aria-controls="panel-students" onclick="showPanel('students',this)">AI for Students</button>
+</nav>
+
+<main id="main-content" aria-label="Workshop content">
+
+<!-- ═══════════════════ INTRO ═══════════════════ -->
+<div class="panel active" id="panel-intro" role="tabpanel" aria-labelledby="tab-intro">
+  <div class="section-header">
+    <span class="section-tag tag-basic">Getting Started</span>
+    <h2>Teaching Identity Interview</h2>
+    <p class="section-sub">Live activity — take your time with this one</p>
+  </div>
+  <div class="card">
+    <div class="card-label example">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="8" cy="8" r="6"/><path d="M8 5v3l2 2"/></svg>
+      Example Prompt
+    </div>
+    <div class="card-body">
+      <p class="card-title">Run a structured interview with Claude about your teaching</p>
+      <div class="prompt-box">Conduct a teaching identity interview with me. Your goal is to help me articulate my teaching vision, and get to know me well enough to support me in future sessions.
+
+Rules:
+• One question at a time.
+• Probe each answer before moving on — push back if something is vague or contradictory, ask for examples, go deeper if something is interesting.
+• Keep your questions short.
+• Cover these four areas in order:
+  1. My core teaching values and philosophy
+  2. The unique constraints I face
+  3. The teaching methods I most value and why
+  4. My research focus and what I struggle with in it
+
+When the interview is complete:
+Produce a structured Teaching &amp; Research Profile, including no less than two tensions I need to work on: [something that emerged from our conversation that I hadn't fully articulated]</div>
+      <div class="instruction">💡 This is a live conversation — let Claude ask you questions one at a time. Push back on vague answers the same way you'd expect a good mentor to. The profile Claude produces at the end is yours to keep and build on.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════ BASIC PROMPTING ═══════════════════ -->
+<div class="panel" id="panel-basic" role="tabpanel" aria-labelledby="tab-basic">
+  <div class="section-header">
+    <span class="section-tag tag-basic">Basic Prompting</span>
+    <h2>The PCTVF Framework</h2>
+    <p class="section-sub">Purpose · Context · Task · Validation · Format</p>
+  </div>
+
+  <div class="card">
+    <div class="card-label example">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="8" cy="8" r="6"/><path d="M8 5v3l2 2"/></svg>
+      Example — Weak Prompt &amp; What Claude Returns
+    </div>
+    <div class="card-body">
+      <p class="card-title">The prompt sent to Claude (bare, no framework)</p>
+      <div class="prompt-box">Create a weekly lesson plan for critical thinking skills.</div>
+
+      <div class="output-box">
+        <div class="output-label">↓ Claude's output — what this bare prompt produces</div>
+        <strong>WEEKLY LESSON PLAN — Critical Thinking Skills</strong>
+        <br><br>
+        <strong>Learning Objectives:</strong> Students will understand critical thinking. Students will develop analytical skills. Students will improve their academic writing.
+        <br><br>
+        <table>
+          <tr><th>Session</th><th>Topic (45 min)</th><th>Activities</th></tr>
+          <tr>
+            <td>1</td>
+            <td>Introduction to Critical Thinking</td>
+            <td>Define critical thinking · Discuss why it matters · Group activity: examples of critical thinking</td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td>Analytical Skills</td>
+            <td>What are analytical skills? · How to develop them · Worksheet: practice analytical skills</td>
+          </tr>
+          <tr>
+            <td>3</td>
+            <td>Academic Writing</td>
+            <td>What is academic writing? · Characteristics · Practice: write a short academic paragraph</td>
+          </tr>
+          <tr>
+            <td>4</td>
+            <td>Assessment</td>
+            <td>Short test on critical thinking, analytical skills and academic writing</td>
+          </tr>
+        </table>
+        <br>
+        <strong>Teacher Notes:</strong> Deliver lessons with enthusiasm. Ensure all students are engaged.
+      </div>
+
+      <div class="instruction">⚠️ <strong>What's wrong with this output?</strong></div>
+    </div>
+  </div>
+
+  <div class="divider">The Framework</div>
+
+  <div class="framework">
+    <span class="framework-item">📌 Purpose</span>
+    <span class="framework-item">🏛️ Context</span>
+    <span class="framework-item">🎯 Task</span>
+    <span class="framework-item">✅ Validation</span>
+    <span class="framework-item">📄 Format</span>
+  </div>
+
+  <div class="your-turn-wrapper">
+    <button class="your-turn-btn" onclick="toggleTask(this)" aria-expanded="false">
+      <span>✦&nbsp;&nbsp;Your Turn →</span>
+      <span class="btn-arrow">›</span>
+    </button>
+    <div class="your-turn-content" aria-hidden="true">
+      <div class="your-turn-label">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="2" width="10" height="12" rx="1"/><path d="M6 6h4M6 9h4M6 12h2"/></svg>
+        Your Task
+      </div>
+      <div class="your-turn-body">
+        <p class="card-title">Develop this assignment — using the PCTVF framework</p>
+        <div class="prompt-box">Develop this assignment: [paste or describe the assignment]</div>
+        <div class="instruction">
+          <strong>Your task:</strong> The prompt above is deliberately bare. Revise it by adding all five framework elements:
+          <br><br>
+          <strong>Purpose</strong> — Why are you asking? What specific feedback goal do you have?<br>
+          <strong>Context</strong> — What course, level, assignment type, and student profile?<br>
+          <strong>Task</strong> — What exactly should Claude do? (Comment? Grade? Suggest improvements?)<br>
+          <strong>Validation</strong> — Ask Claude to validate the output against multiple reliable sources.<br>
+          <strong>Format</strong> — How should the assignment be structured? (bullet points, rubric, staged tasks?)
+          <br><br>
+          Try it on a real assignment from your own course. Compare the output to what the bare prompt gives you.
+        </div>
+
+        <div class="input-area">
+          <label class="input-label" for="input-pctvf">Your revised prompt — paste it here for feedback</label>
+          <textarea id="input-pctvf" class="user-prompt-input" rows="7"
+            placeholder="Write your improved version of the prompt here, applying all five PCTVF elements…"></textarea>
+          <button class="feedback-btn" onclick="getFeedback(this,'pctvf')" aria-label="Get AI feedback on your PCTVF prompt">
+            <span class="feedback-spinner" aria-hidden="true"></span>
+            Get AI Feedback →
+          </button>
+          <div class="feedback-output" hidden>
+            <div class="output-label">↓ Feedback on your prompt</div>
+            <div class="feedback-text" aria-live="polite"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════ PERSONA ═══════════════════ -->
+<div class="panel" id="panel-persona" role="tabpanel" aria-labelledby="tab-persona">
+  <div class="section-header">
+    <span class="section-tag tag-adv">Advanced Prompting</span>
+    <h2>Persona</h2>
+    <p class="section-sub">Give Claude a role — and watch the quality of thinking change</p>
+  </div>
+
+  <div class="card">
+    <div class="card-label example">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="8" cy="8" r="6"/><path d="M8 5v3l2 2"/></svg>
+      Example — Basic Persona (weak)
+    </div>
+    <div class="card-body">
+      <p class="card-title">Assigning a role without any detail</p>
+      <div class="prompt-box">You are expert in AI use, help me redesign my course content, teaching activities while utilizing AI</div>
+      <div class="instruction">⚠️ A role is named but not built. No seniority, no methodology, no domain specificity. Compare what you get here with the Advanced Persona below.</div>
+    </div>
+  </div>
+
+  <div class="divider">Advanced Persona — 4-part structure</div>
+
+  <div class="framework">
+    <span class="framework-item">🎓 Specific Role &amp; Seniority</span>
+    <span class="framework-item">🌍 Domain &amp; Context</span>
+    <span class="framework-item">🔬 Methodologies</span>
+    <span class="framework-item">📋 Output Format + Constraints</span>
+  </div>
+
+  <div class="card">
+    <div class="card-label example">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="8" cy="8" r="6"/><path d="M8 5v3l2 2"/></svg>
+      Example — Advanced Persona (full prompt)
+    </div>
+    <div class="card-body">
+      <p class="card-title">Course redesign with a fully constructed persona</p>
+      <div class="prompt-steps">
+        <div class="prompt-step"><div class="step-label">Specific Role &amp; Seniority</div>You are an expert in designing educational systems using Gen. AI with 15 years of experience.</div>
+        <div class="prompt-step"><div class="step-label">Domain &amp; Context</div>Using interesting methods you helped 1000s of university staff advance their teaching skills utilizing advanced Gen. AI use.</div>
+        <div class="prompt-step"><div class="step-label">Methodologies</div>You base your techniques on scientifically proven methods (both in pedagogy and in Gen. AI) to help university staff achieve mastery of their content design.</div>
+        <div class="prompt-step"><div class="step-label">Output Format + Constraints</div>Redesign my course content, teaching activities and assessment, enhancing my teaching practices using Gen. AI, including exercises and tips and tricks. My course is ____</div>
+      </div>
+      <div class="instruction">💡 Fill in the blank with your actual course name and key topics before sending. Run both the basic and advanced versions — notice what changes.</div>
+    </div>
+  </div>
+
+  <div class="your-turn-wrapper">
+    <button class="your-turn-btn" onclick="toggleTask(this)" aria-expanded="false">
+      <span>✦&nbsp;&nbsp;Your Turn →</span>
+      <span class="btn-arrow">›</span>
+    </button>
+    <div class="your-turn-content" aria-hidden="true">
+      <div class="your-turn-label">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="2" width="10" height="12" rx="1"/><path d="M6 6h4M6 9h4M6 12h2"/></svg>
+        Your Task
+      </div>
+      <div class="your-turn-body">
+        <p class="card-title">Teach me [scientific report writing] — rewrite using Advanced Persona</p>
+        <div class="prompt-box">Teach me [scientific report writing]</div>
+        <div class="instruction">
+          <strong>Your task:</strong> Replace the bracket with a topic from your own teaching, then build a full Advanced Persona around it using all four elements:
+          <br><br>
+          1. <strong>Specific role &amp; seniority</strong> — who exactly is this expert?<br>
+          2. <strong>Domain &amp; context</strong> — what is their track record and setting?<br>
+          3. <strong>Methodologies</strong> — what proven approaches do they use?<br>
+          4. <strong>Output format + constraints</strong> — what should the output look like, and what are the limits?
+          <br><br>
+          Run the bare version first, then your persona version. What changed?
+        </div>
+
+        <div class="input-area">
+          <label class="input-label" for="input-persona">Your Advanced Persona prompt — paste it here for feedback</label>
+          <textarea id="input-persona" class="user-prompt-input" rows="7"
+            placeholder="Write your full Advanced Persona prompt here, using all four elements…"></textarea>
+          <button class="feedback-btn" onclick="getFeedback(this,'persona')" aria-label="Get AI feedback on your Persona prompt">
+            <span class="feedback-spinner" aria-hidden="true"></span>
+            Get AI Feedback →
+          </button>
+          <div class="feedback-output" hidden>
+            <div class="output-label">↓ Feedback on your prompt</div>
+            <div class="feedback-text" aria-live="polite"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════ STACKED PERSONA ═══════════════════ -->
+<div class="panel" id="panel-stacked" role="tabpanel" aria-labelledby="tab-stacked">
+  <div class="section-header">
+    <span class="section-tag tag-adv">Advanced Prompting</span>
+    <h2>Stacked Persona</h2>
+    <p class="section-sub">Combine multiple expert perspectives into one prompt</p>
+  </div>
+
+  <div class="card">
+    <div class="card-label example">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="8" cy="8" r="6"/><path d="M8 5v3l2 2"/></svg>
+      Example Prompt (multi-part)
+    </div>
+    <div class="card-body">
+      <p class="card-title">Design a facilitated session using three simultaneous expert lenses</p>
+      <div class="prompt-steps">
+        <div class="prompt-step"><div class="step-label">Expert 1 — Content Specialist</div>You are a senior _______ specializing in ________, with deep familiarity with __________.</div>
+        <div class="prompt-step"><div class="step-label">Expert 2 — Pedagogical Facilitator</div>An experienced ____________________ who uses ________________ to draw out student thinking rather than transmit your own conclusions.</div>
+        <div class="prompt-step"><div class="step-label">Expert 3 — Course Design Specialist</div>An expert in course facilitation design for young students in the field of [].</div>
+        <div class="prompt-step"><div class="step-label">Task</div>Design a _______ for a group of [first-year undergraduates] in the field of ___:
+• Opens with a provocation that creates genuine intellectual discomfort (not a question students can answer from common sense alone)
+• Uses at least three primary source extracts
+• Includes a structured activity that forces students to take a position and defend it
+• Explicitly builds ONE ___________ [thinking] skill
+
+Do not write a lecture. Write a facilitation guide. Every instruction should be addressed to the instructor, not the student.</div>
+        <div class="prompt-step"><div class="step-label">Synthesis Instruction</div>Facilitate the requirements of the three experts to create a cohesive ____________________.</div>
+      </div>
+      <div class="instruction">💡 The key move: ask Claude to hold three expert viewpoints simultaneously and let them <em>negotiate</em> the output. The synthesis instruction at the end activates this — don't skip it.</div>
+    </div>
+  </div>
+
+  <div class="your-turn-wrapper">
+    <button class="your-turn-btn" onclick="toggleTask(this)" aria-expanded="false">
+      <span>✦&nbsp;&nbsp;Your Turn →</span>
+      <span class="btn-arrow">›</span>
+    </button>
+    <div class="your-turn-content" aria-hidden="true">
+      <div class="your-turn-label">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="2" width="10" height="12" rx="1"/><path d="M6 6h4M6 9h4M6 12h2"/></svg>
+        Your Task
+      </div>
+      <div class="your-turn-body">
+        <p class="card-title">Review my research proposal and give me feedback — using Stacked Persona</p>
+        <div class="prompt-box">Review my research proposal and give me feedback.</div>
+        <div class="instruction">
+          <strong>Your task:</strong> That prompt will produce flat, generic feedback. Revise it using the Stacked Persona technique. Decide what three expert perspectives would be most useful for your specific proposal:
+          <br><br>
+          — Expert 1: e.g. a senior researcher in your discipline<br>
+          — Expert 2: e.g. a methodology specialist, a journal editor, a statistician<br>
+          — Expert 3: e.g. a grant reviewer, or a pedagogy expert if it's an educational study
+          <br><br>
+          Fill in the blanks in the template above and apply it to your own research proposal or a current draft.
+        </div>
+
+        <div class="input-area">
+          <label class="input-label" for="input-stacked">Your Stacked Persona prompt — paste it here for feedback</label>
+          <textarea id="input-stacked" class="user-prompt-input" rows="7"
+            placeholder="Write your Stacked Persona prompt here, with all three experts defined and a synthesis instruction at the end…"></textarea>
+          <button class="feedback-btn" onclick="getFeedback(this,'stacked')" aria-label="Get AI feedback on your Stacked Persona prompt">
+            <span class="feedback-spinner" aria-hidden="true"></span>
+            Get AI Feedback →
+          </button>
+          <div class="feedback-output" hidden>
+            <div class="output-label">↓ Feedback on your prompt</div>
+            <div class="feedback-text" aria-live="polite"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════ CHAIN OF THOUGHT ═══════════════════ -->
+<div class="panel" id="panel-cot" role="tabpanel" aria-labelledby="tab-cot">
+  <div class="section-header">
+    <span class="section-tag tag-adv">Advanced Prompting</span>
+    <h2>Chain of Thought (CoT)</h2>
+    <p class="section-sub">Force Claude to reason step-by-step before it recommends anything</p>
+  </div>
+
+  <div class="card">
+    <div class="card-label example">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="8" cy="8" r="6"/><path d="M8 5v3l2 2"/></svg>
+      Example Prompt — Redesigning an AI-vulnerable assignment
+    </div>
+    <div class="card-body">
+      <p class="card-title">How should I redesign my [essay] assignment now that students have access to AI?</p>
+      <div class="prompt-steps">
+        <div class="prompt-step"><div class="step-label">Setup</div>I need to redesign a [second-year undergraduate research assignment] for a module on [environmental policy]. The current assignment is:
+
+"_____________________________________________"
+
+Before giving me any recommendations, work through this problem step by step:</div>
+        <div class="prompt-step"><div class="step-label">Step 1 — AI Vulnerability Analysis</div>Analyze the current assignment for AI risk level (High / Medium / Low) and explain why.</div>
+        <div class="prompt-step"><div class="step-label">Step 2 — Learning Outcome Audit</div>List the actual learning outcomes this assignment is designed to achieve. Then identify which of those outcomes require genuine student cognition and which could be satisfied by a well-prompted AI.</div>
+        <div class="prompt-step"><div class="step-label">Step 3 — Redesign Options</div>Propose THREE different redesign approaches:
+• Option A: AI-Resilient (minimal AI involvement possible)
+• Option B: AI-Integrated (students use AI explicitly as part of the task)
+• Option C: AI-Transparent (students use AI freely but must declare its use)</div>
+        <div class="prompt-step"><div class="step-label">Step 4 — Recommendation</div>Which option do you recommend and why?</div>
+      </div>
+      <div class="instruction">💡 The phrase <em>"before giving me any recommendations, work through this step by step"</em> is the key. It stops Claude from jumping to solutions and forces genuine analysis first.</div>
+    </div>
+  </div>
+
+  <div class="your-turn-wrapper">
+    <button class="your-turn-btn" onclick="toggleTask(this)" aria-expanded="false">
+      <span>✦&nbsp;&nbsp;Your Turn →</span>
+      <span class="btn-arrow">›</span>
+    </button>
+    <div class="your-turn-content" aria-hidden="true">
+      <div class="your-turn-label">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="2" width="10" height="12" rx="1"/><path d="M6 6h4M6 9h4M6 12h2"/></svg>
+        Your Task
+      </div>
+      <div class="your-turn-body">
+        <p class="card-title">Redesign my assignment on [] to be AI-proof — using Chain of Thought</p>
+        <div class="prompt-box">Redesign my assignment on [] to be AI proof.</div>
+        <div class="instruction">
+          <strong>Your task:</strong> Take a real assignment from your own course. Fill in the blanks in the CoT example above — replace the placeholders with your actual course level, module topic, and current assignment description. Then run the full 4-step version.
+          <br><br>
+          Pay close attention to Step 2 — the Learning Outcome Audit often reveals that parts of an assignment were already superficial long before AI existed.
+        </div>
+
+        <div class="input-area">
+          <label class="input-label" for="input-cot">Your Chain of Thought prompt — paste it here for feedback</label>
+          <textarea id="input-cot" class="user-prompt-input" rows="7"
+            placeholder="Write your full Chain of Thought prompt here, with setup and all four steps…"></textarea>
+          <button class="feedback-btn" onclick="getFeedback(this,'cot')" aria-label="Get AI feedback on your Chain of Thought prompt">
+            <span class="feedback-spinner" aria-hidden="true"></span>
+            Get AI Feedback →
+          </button>
+          <div class="feedback-output" hidden>
+            <div class="output-label">↓ Feedback on your prompt</div>
+            <div class="feedback-text" aria-live="polite"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════ NEGATIVE PROMPTING ═══════════════════ -->
+<div class="panel" id="panel-negative" role="tabpanel" aria-labelledby="tab-negative">
+  <div class="section-header">
+    <span class="section-tag tag-adv">Advanced Prompting</span>
+    <h2>Negative Prompting</h2>
+    <p class="section-sub">Define what Claude must NOT do — to force better thinking</p>
+  </div>
+
+  <div class="card">
+    <div class="card-label example">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="8" cy="8" r="6"/><path d="M8 5v3l2 2"/></svg>
+      Example Prompt — Peer review without rewriting
+    </div>
+    <div class="card-body">
+      <p class="card-title">Give feedback that makes students think — not copy</p>
+      <div class="prompt-steps">
+        <div class="prompt-step"><div class="step-label">Context</div>This is an academic paragraph [written by a third-year undergraduate for a research methods assignment].</div>
+        <div class="prompt-step"><div class="step-label">Constraints — Absolute Rules</div>Do NOT be agreeable.
+Do NOT rewrite, rephrase, or edit any part of the text.
+Do NOT suggest alternative sentences.
+Do NOT identify spelling or grammar errors.</div>
+        <div class="prompt-step"><div class="step-label">Your Task</div>Act as a thoughtful peer reviewer who helps the writer improve their own work. You are permitted only to:
+• Ask questions about what the writer was trying to do (intention questions)
+• Identify moments where you, as a reader, became confused or lost
+• Name all the strengths in the paragraph
+
+The writer should leave this interaction knowing exactly what to revise and why — and should have arrived at that understanding themselves.</div>
+      </div>
+      <div class="instruction">💡 Negative constraints are one of the most powerful prompting tools. By telling Claude what it <em>cannot</em> do, you force it to do the harder, more useful thing. The student learns more because Claude does less.</div>
+    </div>
+  </div>
+
+  <div class="your-turn-wrapper">
+    <button class="your-turn-btn" onclick="toggleTask(this)" aria-expanded="false">
+      <span>✦&nbsp;&nbsp;Your Turn →</span>
+      <span class="btn-arrow">›</span>
+    </button>
+    <div class="your-turn-content" aria-hidden="true">
+      <div class="your-turn-label">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="2" width="10" height="12" rx="1"/><path d="M6 6h4M6 9h4M6 12h2"/></svg>
+        Your Task
+      </div>
+      <div class="your-turn-body">
+        <p class="card-title">Refine the language of this paragraph [] — using Negative Prompting</p>
+        <div class="prompt-box">Refine the language of this paragraph []</div>
+        <div class="instruction">
+          <strong>Your task:</strong> Take a paragraph from student work (or your own writing) and run the bare prompt above first — note what you get. Then apply the Negative Prompting technique:
+          <br><br>
+          1. Set the <strong>context</strong> — who wrote it, for what purpose?<br>
+          2. Write at least <strong>3 clear constraints</strong> (things Claude must NOT do)<br>
+          3. Define <strong>exactly what Claude IS permitted to do</strong>
+          <br><br>
+          Think carefully about what constraints would produce the most educationally useful feedback for your students' level and discipline.
+        </div>
+
+        <div class="input-area">
+          <label class="input-label" for="input-negative">Your Negative Prompting prompt — paste it here for feedback</label>
+          <textarea id="input-negative" class="user-prompt-input" rows="7"
+            placeholder="Write your Negative Prompting prompt here — with context, at least 3 DO NOT constraints, and what Claude IS permitted to do…"></textarea>
+          <button class="feedback-btn" onclick="getFeedback(this,'negative')" aria-label="Get AI feedback on your Negative Prompting prompt">
+            <span class="feedback-spinner" aria-hidden="true"></span>
+            Get AI Feedback →
+          </button>
+          <div class="feedback-output" hidden>
+            <div class="output-label">↓ Feedback on your prompt</div>
+            <div class="feedback-text" aria-live="polite"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════ GEN AI IN RESEARCH ═══════════════════ -->
+<div class="panel" id="panel-research" role="tabpanel" aria-labelledby="tab-research">
+  <div class="section-header">
+    <span class="section-tag tag-research">Gen AI in Research</span>
+    <h2>Excel · Data · Journal Fit</h2>
+    <p class="section-sub">Research workflows where Gen AI can save hours — and where it can mislead you</p>
+  </div>
+
+  <div class="divider">Excel &amp; Gen AI — Data Cleaning</div>
+
+  <div class="card">
+    <div class="card-label example">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="8" cy="8" r="6"/><path d="M8 5v3l2 2"/></svg>
+      Example Prompt — Step 1: Audit before you change anything
+    </div>
+    <div class="card-body">
+      <p class="card-title">Audit the data — don't touch it yet</p>
+      <div class="prompt-box">For the attached Excel file. I need you to audit the [] sheet for data quality problems. Check for and list:
+1. Duplicate rows
+2. Inconsistent spellings or formats in text columns
+3. Missing values
+4. Impossible or suspicious values
+5. Text values in numeric columns and vice versa
+
+Present the findings in a table with columns: Issue Type | Location (row/column) | Description | Suggested Fix.
+
+Do not change the file yet. I want to review the issues first.</div>
+      <div class="instruction">💡 Always audit before cleaning. Once you've reviewed and confirmed the fixes make sense, send the follow-up below.</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-label example">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="8" cy="8" r="6"/><path d="M8 5v3l2 2"/></svg>
+      Example Prompt — Step 2: Apply the fixes
+    </div>
+    <div class="card-body">
+      <p class="card-title">Clean the file after review</p>
+      <div class="prompt-box">Now apply the fixes you suggested and give me back a cleaned version of the sheet.</div>
+    </div>
+  </div>
+
+  <div class="divider">Excel &amp; Gen AI — Analysis</div>
+
+  <div class="card">
+    <div class="card-label example">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="8" cy="8" r="6"/><path d="M8 5v3l2 2"/></svg>
+      Example Prompt — Student evaluation analysis
+    </div>
+    <div class="card-body">
+      <p class="card-title">Extract actionable insights from course evaluation data</p>
+      <div class="prompt-box">In the attached file, analyze the [] sheet. This contains student evaluation scores (1–5 scale) for courses across 5 semesters and several departments.
+
+Act as an academic quality analyst and answer:
+
+1. Which departments have the highest and lowest average overall satisfaction (Q5) across all semesters?
+2. Is there any department where scores are consistently declining semester over semester? Any that are improving?
+3. Which specific courses are underperforming (average Q5 below 3.0 across the semesters)?
+4. Is there a relationship between student response rate (Responses / Enrolled) and the satisfaction scores?
+5. Across all courses, which of the five questions (Q1–Q5) tends to score lowest? What might that suggest about where the faculty should focus improvement efforts?
+
+For each finding, give me the specific numbers, not just general statements. End with a short "Key Takeaways" section.</div>
+      <div class="instruction">⚠️ Always verify key numbers against the raw data. Claude can misread column structures in complex spreadsheets. Use it for speed and pattern-spotting — then confirm the critical figures yourself.</div>
+    </div>
+  </div>
+
+  <div class="divider">Adjust Paper to Fit a Journal</div>
+
+  <div class="card">
+    <div class="card-label example">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="8" cy="8" r="6"/><path d="M8 5v3l2 2"/></svg>
+      Example Prompt — Full journal alignment workflow
+    </div>
+    <div class="card-body">
+      <p class="card-title">Get Claude to analyse the journal before it analyses your paper</p>
+      <div class="prompt-steps">
+        <div class="prompt-step"><div class="step-label">Step 1 — Analyse the Journal</div>For the journal [journal name], find no less than 10 recent articles and analyse them for common characteristics: document structure, common methodologies, accepted case studies, and common traits that you find.</div>
+        <div class="prompt-step"><div class="step-label">Step 2 — Compare Your Paper</div>Then compare my article [upload your paper] to the common characteristics of the journal and produce a detailed report showing all the changes I must do to meet the journal's norms.
+
+The comparison should be based solely on the analysis of the recent journal papers. Do not use your training data or the journal's website aims and scope.</div>
+        <div class="prompt-step"><div class="step-label">Step 3 — Prioritise &amp; Schedule</div>List the required changes in order from most important to least important. Then create a detailed revision schedule for me to follow.</div>
+        <div class="prompt-step"><div class="step-label">Step 4 — Honest Fit Assessment</div>Be honest: if my article is not a good fit for critical reasons (different scope, methods never used in the journal) — state your judgment with complete referenced reasons.</div>
+      </div>
+      <div class="instruction">⚠️ <strong>Critical caution:</strong> Claude can fabricate citations. Never submit journal references it generates without manually verifying each one. Use this workflow for structure and strategy — not for your reference list.</div>
+    </div>
+  </div>
+
+  <div class="your-turn-wrapper">
+    <button class="your-turn-btn" onclick="toggleTask(this)" aria-expanded="false">
+      <span>✦&nbsp;&nbsp;Your Turn →</span>
+      <span class="btn-arrow">›</span>
+    </button>
+    <div class="your-turn-content" aria-hidden="true">
+      <div class="your-turn-label">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="2" width="10" height="12" rx="1"/><path d="M6 6h4M6 9h4M6 12h2"/></svg>
+        Your Task
+      </div>
+      <div class="your-turn-body">
+        <p class="card-title">Fit your paper to a target journal</p>
+        <div class="instruction">
+          <strong>Use a paper you are currently working on or planning to submit.</strong> Work through the four-step prompt above, substituting:
+          <br><br>
+          — <strong>[journal name]</strong> → a journal you are genuinely targeting<br>
+          — <strong>[upload your paper]</strong> → paste your abstract + introduction + methodology, or the full text
+          <br><br>
+          <strong>What to check in the output:</strong><br>
+          ✔ Does the structure Claude recommends match what you see in recent issues?<br>
+          ✔ Are the methodological norms it identifies accurate for your field?<br>
+          ✔ Does the honest fit assessment flag anything surprising?
+          <br><br>
+          <strong>After the session:</strong> Take the revision schedule and verify it against 3 actual recent papers from that journal before acting on it.
+        </div>
+
+        <div class="input-area">
+          <label class="input-label" for="input-research">Your journal fit prompt — paste it here for feedback</label>
+          <textarea id="input-research" class="user-prompt-input" rows="7"
+            placeholder="Write your journal alignment prompt here, working through all four steps…"></textarea>
+          <button class="feedback-btn" onclick="getFeedback(this,'research')" aria-label="Get AI feedback on your journal fit prompt">
+            <span class="feedback-spinner" aria-hidden="true"></span>
+            Get AI Feedback →
+          </button>
+          <div class="feedback-output" hidden>
+            <div class="output-label">↓ Feedback on your prompt</div>
+            <div class="feedback-text" aria-live="polite"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════ AI FOR STUDENTS ═══════════════════ -->
+<div class="panel" id="panel-students" role="tabpanel" aria-labelledby="tab-students">
+  <div class="section-header">
+    <span class="section-tag tag-students">Advanced AI for Students' Experiences</span>
+    <h2>Assessment Design &amp; Iterative Refinement</h2>
+    <p class="section-sub">How to redesign what students submit — and how to build teaching sessions iteratively with Claude</p>
+  </div>
+
+  <div class="divider">Assessment for Gen AI</div>
+
+  <div class="card">
+    <div class="card-label example">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="8" cy="8" r="6"/><path d="M8 5v3l2 2"/></svg>
+      Example — Before: the unmodified assignment brief
+    </div>
+    <div class="card-body">
+      <p class="card-title">What you currently give students</p>
+      <div class="prompt-box">Write a report/essay on …</div>
+      <div class="instruction">⚠️ In the age of Gen AI, this can be completed almost entirely by an LLM with zero intellectual engagement from the student. The redesigned version below adds accountability layers without banning AI.</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-label example">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="8" cy="8" r="6"/><path d="M8 5v3l2 2"/></svg>
+      Example — After: AI-Transparent Assessment Design
+    </div>
+    <div class="card-body">
+      <p class="card-title">The redesigned assignment brief (to give to your students)</p>
+      <div class="prompt-box">Write a 1,500-word report/essay on ……
+
+Submit alongside it:
+
+(a) A 500-word 'AI Consultation Log' documenting two interactions you had with the LLM during the research/drafting process, including — in table form — the prompts you used, what the AI produced, and why you accepted, rejected, or modified the output.
+
+(b) [Subject to student level] A 500-word 'Argument Ownership Statement' explaining one interpretive choice in the essay/report that the AI did not suggest and that you can defend verbally in the oral component.
+
+Integrity mechanism: 15-minute oral examination in the following week.</div>
+      <div class="instruction">💡 The oral examination is the integrity mechanism. A student who outsourced their report cannot defend an argument they didn't form. The AI Consultation Log also teaches metacognitive awareness — students must evaluate AI output rather than just accept it.</div>
+    </div>
+  </div>
+
+  <div class="divider">Iterative Refinement</div>
+
+  <div class="card">
+    <div class="card-label example">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="8" cy="8" r="6"/><path d="M8 5v3l2 2"/></svg>
+      Example Prompt — 5-Loop Iterative Refinement
+    </div>
+    <div class="card-body">
+      <p class="card-title">Build a teaching session across 5 iterative loops — think first, then refine</p>
+      <div class="prompt-steps">
+        <div class="prompt-step"><div class="step-label">Opening Instruction</div>Break your teaching task into [5] iterative refinement loops.</div>
+        <div class="prompt-step"><div class="step-label">Iteration 1 — Define + Ask</div>Define the teaching session + task, then ask me [3] questions that you need answered to refine the lecture.</div>
+        <div class="prompt-step"><div class="step-label">Iteration 2 — Design</div>[After I provide answers:] Design the activity for maximum student engagement — include detailed facilitator instructions.</div>
+        <div class="prompt-step"><div class="step-label">Iteration 3 — Challenge</div>Challenge and critique the proposal, then revise [only these points, and leave everything else unchanged] / [the entire activity — your choice].</div>
+        <div class="prompt-step"><div class="step-label">Iteration 4 — Scaffold</div>Build a scaffold where the teaching session progresses from basic to advanced concepts.</div>
+        <div class="prompt-step"><div class="step-label">Iteration 5 — Reflect</div>Reflect on what we just did, and write one paragraph on the session design including the design rationale and the pedagogical logic.</div>
+      </div>
+      <div class="instruction">💡 The key habit: <strong>think first, then let AI help you develop your ideas.</strong> Before Iteration 1, write a rough outline of what you want the session to achieve — then let Claude help you build it.</div>
+    </div>
+  </div>
+
+  <div class="your-turn-wrapper">
+    <button class="your-turn-btn" onclick="toggleTask(this)" aria-expanded="false">
+      <span>✦&nbsp;&nbsp;Your Turn →</span>
+      <span class="btn-arrow">›</span>
+    </button>
+    <div class="your-turn-content" aria-hidden="true">
+      <div class="your-turn-label">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="2" width="10" height="12" rx="1"/><path d="M6 6h4M6 9h4M6 12h2"/></svg>
+        Your Task
+      </div>
+      <div class="your-turn-body">
+        <p class="card-title">Refine one of your teaching activities — 6 loops</p>
+        <div class="instruction">
+          <strong>Pick one teaching activity you already use</strong> — a lecture segment, a group task, a discussion prompt, a lab activity. It doesn't need to be polished.
+          <br><br>
+          <strong>Before you start:</strong> Write 3–5 sentences about what you want students to learn and what's not currently working well. Do this before you open Claude.
+          <br><br>
+          Then run <strong>6 iterative loops</strong>:
+          <br><br>
+          Loop 1 → Define + 3 questions<br>
+          Loop 2 → Design with facilitator detail<br>
+          Loop 3 → Critique + selective or full revision<br>
+          Loop 4 → Scaffold basic → advanced<br>
+          Loop 5 → Add one assessment moment<br>
+          Loop 6 → Reflect on the pedagogical logic
+          <br><br>
+          At the end, compare your original 3–5 sentences to what Claude produced. What did you not think of? What did Claude miss or get wrong?
+        </div>
+
+        <div class="input-area">
+          <label class="input-label" for="input-students">Your 6-loop iterative prompt — paste it here for feedback</label>
+          <textarea id="input-students" class="user-prompt-input" rows="7"
+            placeholder="Write your Iterative Refinement prompt here, showing the 6-loop structure and your pre-thinking…"></textarea>
+          <button class="feedback-btn" onclick="getFeedback(this,'students')" aria-label="Get AI feedback on your Iterative Refinement prompt">
+            <span class="feedback-spinner" aria-hidden="true"></span>
+            Get AI Feedback →
+          </button>
+          <div class="feedback-output" hidden>
+            <div class="output-label">↓ Feedback on your prompt</div>
+            <div class="feedback-text" aria-live="polite"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</main>
+
+<script>
+// ─────────────────────────────────────────────
+//  CONFIG — replace with your Cloudflare Worker URL after deployment
+// ─────────────────────────────────────────────
+const WORKER_URL = 'https://ai-edu-companion.gomaa-architect.workers.dev';
+
+// ─────────────────────────────────────────────
+//  SYSTEM PROMPTS
+//  Each is derived strictly from the criteria stated in this document.
+//  Do not change these — they are the rubric participants are assessed against.
+// ─────────────────────────────────────────────
+const SYSTEM_PROMPTS = {
+
+  pctvf: `You are a feedback tool for a university AI in Education workshop. Evaluate the participant's prompt strictly against the PCTVF framework taught in this workshop. Use plain text only — no markdown, no asterisks, no bullet symbols other than the checkmarks shown below.
+
+Check only for these six elements:
+Clarity — Can someone reading this immediately understand EXACTLY what the user wants Claude to do? Is it specific or vague (e.g. "give feedback" vs "give feedback on argument structure")?
+P — Purpose: Is there a clear statement of WHY they are asking and what specific feedback goal they have?
+C — Context: Does it specify the course level, assignment type, and student profile?
+T — Task: Does it state exactly what Claude should do (comment, grade, suggest improvements, etc.)?
+V — Validation: Does it ask Claude to validate the output against multiple reliable sources?
+F — Format: Does it specify how the output should be structured?
+
+For each element write one line using this format:
+✓ [element] — [brief reason it passes]
+⚠ [element] — [brief reason it is weak or vague]
+✗ [element] — [what is missing]
+
+Then write one sentence of overall guidance. Keep the total response under 160 words. Do not comment on anything outside these elements.`,
+
+  persona: `You are a feedback tool for a university AI in Education workshop. Evaluate the participant's prompt strictly against the Advanced Persona technique taught in this workshop. Use plain text only — no markdown, no asterisks.
+
+Check only for these five elements:
+Clarity — Is it immediately clear what the user wants Claude to do? (e.g. "teach me X" vs vague requests)
+1. Specific Role & Seniority — Is the expert role named with specific seniority or years of experience?
+2. Domain & Context — Is there a track record, setting, or history of impact described?
+3. Methodologies — Are specific, proven methods or approaches mentioned?
+4. Output Format + Constraints — Is there a clear instruction on what the output should look like and any limits?
+
+For each element write one line using this format:
+✓ [element name] — [brief reason it passes]
+⚠ [element name] — [brief reason it is weak or vague]
+✗ [element name] — [what is missing]
+
+Then write one sentence of overall guidance. Keep the total response under 160 words. Do not comment on anything outside these elements.`,
+
+  stacked: `You are a feedback tool for a university AI in Education workshop. Evaluate the participant's prompt strictly against the Stacked Persona technique taught in this workshop. Use plain text only — no markdown, no asterisks.
+
+Check only for these five elements:
+Clarity — Is it clear what the user wants the three experts to review or analyze? (e.g. "review my proposal" tells you WHICH proposal? What aspect?)
+1. Expert 1 — Is a first distinct expert role clearly defined with sufficient specificity?
+2. Expert 2 — Is a second distinct expert role clearly defined with sufficient specificity?
+3. Expert 3 — Is a third distinct expert role clearly defined with sufficient specificity?
+4. Synthesis instruction — Does the prompt end with an explicit instruction asking Claude to hold all three perspectives simultaneously and produce a cohesive output?
+
+For each element write one line using this format:
+✓ [element name] — [brief reason it passes]
+⚠ [element name] — [brief reason it is weak or vague]
+✗ [element name] — [what is missing]
+
+Then write one sentence of overall guidance. Keep the total response under 170 words. Do not comment on anything outside these elements.`,
+
+  cot: `You are a feedback tool for a university AI in Education workshop. Evaluate the participant's prompt strictly against the Chain of Thought technique taught in this workshop. Use plain text only — no markdown, no asterisks.
+
+Check only for these elements:
+Clarity — Is it immediately clear which assignment is being redesigned and WHY (what problem are they solving)?
+Setup — Does it provide the course level, module topic, and current assignment description?
+CoT trigger — Does it explicitly tell Claude to work through the problem step by step BEFORE giving recommendations?
+Step 1 — Does it ask for an AI Vulnerability Analysis (High / Medium / Low risk with explanation)?
+Step 2 — Does it ask for a Learning Outcome Audit (which outcomes require genuine student cognition vs which AI could satisfy)?
+Step 3 — Does it ask for THREE redesign options: AI-Resilient, AI-Integrated, and AI-Transparent?
+Step 4 — Does it ask for a Recommendation with reasoning?
+
+For each element write one line using this format:
+✓ [element name] — [brief reason it passes]
+⚠ [element name] — [brief reason it is weak or vague]
+✗ [element name] — [what is missing]
+
+Then write one sentence of overall guidance. Keep the total response under 200 words. Do not comment on anything outside these elements.`,
+
+  negative: `You are a feedback tool for a university AI in Education workshop. Evaluate the participant's prompt strictly against the Negative Prompting technique taught in this workshop. Use plain text only — no markdown, no asterisks.
+
+Check only for these four elements:
+Clarity — Is the user's goal crystal clear? (e.g. "refine language" alone is vague — refined for what purpose? academic writing? clarity? flow?)
+Context — Does the prompt establish who wrote the text and for what purpose?
+Constraints — Does the prompt include at least 3 explicit DO NOT or must NOT instructions that prevent Claude from taking the easy path? Count how many are present.
+Permitted actions — Does the prompt clearly define what Claude IS permitted to do? This must be specific, not just the inverse of the constraints.
+
+For each element write one line using this format:
+✓ [element name] — [brief reason it passes]
+⚠ [element name] — [brief reason it is weak or vague]
+✗ [element name] — [what is missing]
+
+If fewer than 3 constraints are present, state exactly how many were found and how many are missing.
+Then write one sentence of overall guidance. Keep the total response under 160 words. Do not comment on anything outside these elements.`,
+
+  research: `You are a feedback tool for a university AI in Education workshop. Evaluate the participant's prompt strictly against the 4-step journal alignment workflow taught in this workshop. Use plain text only — no markdown, no asterisks.
+
+Check only for these five elements:
+Clarity — Is it clear WHICH journal they're targeting and WHICH paper Claude should analyse? (e.g. "fit my paper to a journal" is vague without specifics)
+Step 1 — Journal analysis: Does the prompt ask Claude to find and analyse recent articles (at least 10) from the target journal, covering structure, methodologies, and common traits?
+Step 2 — Paper comparison: Does it ask Claude to compare the user's paper against the norms derived from those articles — explicitly NOT from the journal's stated aims or website?
+Step 3 — Prioritise & schedule: Does it ask for changes listed in priority order and a revision schedule?
+Step 4 — Honest fit assessment: Does it ask Claude to give an honest judgment with referenced reasons if the paper does not fit?
+
+For each element write one line using this format:
+✓ [element name] — [brief reason it passes]
+⚠ [element name] — [brief reason it is weak or vague]
+✗ [element name] — [what is missing]
+
+Then write one sentence of overall guidance. Keep the total response under 200 words. Do not comment on anything outside these elements.`,
+
+  students: `You are a feedback tool for a university AI in Education workshop. Evaluate the participant's prompt strictly against the 6-loop Iterative Refinement technique taught in this workshop. Use plain text only — no markdown, no asterisks.
+
+Check only for these elements:
+Clarity — Is it immediately clear WHICH teaching activity they want to refine? (e.g. "refine my teaching activity" alone doesn't tell you if it's a lecture, discussion, lab, etc.)
+Pre-thinking — Does the prompt indicate the participant reflected on their teaching goals before starting?
+Loop 1 — Define: Does it ask Claude to define the teaching session AND ask 3 clarifying questions?
+Loop 2 — Design: Does it ask Claude to design the activity with detailed facilitator instructions?
+Loop 3 — Critique: Does it ask Claude to challenge and revise (specifying selective or full revision)?
+Loop 4 — Scaffold: Does it ask Claude to build a progression from basic to advanced concepts?
+Loop 5 — Assess: Does it ask Claude to add an assessment moment?
+Loop 6 — Reflect: Does it ask Claude to reflect on the pedagogical logic?
+
+For each element write one line using this format:
+✓ [element name] — [brief reason it passes]
+⚠ [element name] — [brief reason it is weak or vague]
+✗ [element name] — [what is missing]
+
+Then write one sentence of overall guidance. Keep the total response under 200 words. Do not comment on anything outside these elements.`
+
+};
+
+// ─────────────────────────────────────────────
+//  GET FEEDBACK — streams response from Cloudflare Worker
+// ─────────────────────────────────────────────
+async function getFeedback(btn, sectionId) {
+  if (WORKER_URL === 'YOUR_CLOUDFLARE_WORKER_URL_HERE') {
+    alert('The AI feedback feature is not yet configured for this session.\nPlease ask the workshop facilitator for assistance.');
+    return;
+  }
+
+  const inputArea  = btn.closest('.input-area');
+  const textarea   = inputArea.querySelector('.user-prompt-input');
+  const output     = inputArea.querySelector('.feedback-output');
+  const textEl     = inputArea.querySelector('.feedback-text');
+  const spinner    = btn.querySelector('.feedback-spinner');
+
+  const userPrompt = textarea.value.trim();
+  if (!userPrompt) {
+    textarea.focus();
+    textarea.style.borderColor = '#a0185a';
+    setTimeout(() => { textarea.style.borderColor = ''; }, 1800);
+    return;
+  }
+
+  // Loading state
+  btn.disabled = true;
+  btn.classList.add('loading');
+  spinner.style.display = 'inline-block';
+  output.hidden = false;
+  textEl.textContent = '';
+
+  try {
+    const response = await fetch(WORKER_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        system: SYSTEM_PROMPTS[sectionId],
+        messages: [{ role: 'user', content: userPrompt }]
+      })
+    });
+
+    if (!response.ok) {
+      throw new Error('Server error ' + response.status + '. Check that your Worker is deployed and the API key is set.');
+    }
+
+    // Stream the SSE response
+    const reader  = response.body.getReader();
+    const decoder = new TextDecoder();
+    let buffer = '';
+
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+
+      buffer += decoder.decode(value, { stream: true });
+      const lines = buffer.split('\n');
+      buffer = lines.pop(); // keep any incomplete line
+
+      for (const line of lines) {
+        if (!line.startsWith('data: ')) continue;
+        const data = line.slice(6).trim();
+        if (data === '[DONE]') continue;
+        try {
+          const parsed = JSON.parse(data);
+          if (parsed.type === 'content_block_delta' &&
+              parsed.delta?.type === 'text_delta' &&
+              parsed.delta.text) {
+            textEl.textContent += parsed.delta.text;
+          }
+        } catch { /* skip malformed chunks */ }
+      }
+    }
+
+  } catch (err) {
+    textEl.textContent = 'Could not get feedback: ' + err.message;
+  } finally {
+    btn.disabled = false;
+    btn.classList.remove('loading');
+    spinner.style.display = 'none';
+  }
+}
+
+// ─────────────────────────────────────────────
+//  PANEL + ACCORDION NAVIGATION
+// ─────────────────────────────────────────────
+function showPanel(id, btn) {
+  document.querySelectorAll('.panel').forEach(p => {
+    p.classList.remove('active');
+    p.setAttribute('hidden', '');
+  });
+  document.querySelectorAll('.nav-btn').forEach(b => {
+    b.classList.remove('active');
+    b.setAttribute('aria-selected', 'false');
+  });
+  const panel = document.getElementById('panel-' + id);
+  panel.classList.add('active');
+  panel.removeAttribute('hidden');
+  btn.classList.add('active');
+  btn.setAttribute('aria-selected', 'true');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function toggleTask(btn) {
+  const content = btn.nextElementSibling;
+  const isOpen  = content.classList.contains('visible');
+  content.classList.toggle('visible', !isOpen);
+  btn.classList.toggle('open', !isOpen);
+  btn.setAttribute('aria-expanded', String(!isOpen));
+  content.setAttribute('aria-hidden', String(isOpen));
+}
+
+// Initialise hidden panels (all except the active one)
+document.querySelectorAll('.panel:not(.active)').forEach(p => {
+  p.setAttribute('hidden', '');
+});
+
+// Mark all decorative SVGs as aria-hidden
+document.querySelectorAll('.card-label svg, .your-turn-label svg').forEach(svg => {
+  svg.setAttribute('aria-hidden', 'true');
+  svg.setAttribute('focusable', 'false');
+});
+</script>
+</body>
+</html>
